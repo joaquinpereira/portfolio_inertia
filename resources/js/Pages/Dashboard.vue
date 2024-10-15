@@ -1,13 +1,19 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+
+
+import { CContainer } from '@coreui/vue'
+import AppFooter from '@/Components_core_ui/AppFooter.vue'
+import AppHeader from '@/Components_core_ui/AppHeader.vue'
+import AppSidebar from '@/Components_core_ui/AppSidebar.vue'
 </script>
 
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <template #header>
+        <!-- <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
             >
@@ -21,9 +27,21 @@ import { Head } from '@inertiajs/vue3';
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                        You're logged in!
+                        You're logged in!  lololo
                     </div>
                 </div>
+            </div>
+        </div> -->
+        <div>
+            <AppSidebar />
+            <div class="wrapper d-flex flex-column min-vh-100">
+                <AppHeader />
+                <div class="body flex-grow-1">
+                    <CContainer class="px-4" lg>
+                        s hola mama
+                    </CContainer>
+                </div>
+                <AppFooter />
             </div>
         </div>
     </AuthenticatedLayout>
