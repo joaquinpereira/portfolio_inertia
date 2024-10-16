@@ -16,6 +16,7 @@
     "@popperjs/core": "^2.11.8",
     "chart.js": "^4.4.2",
     "pinia": "^2.1.7",
+    "postscribe": "^2.0.8",
     "simplebar-vue": "^2.3.3"
   },
   "devDependencies": {
