@@ -26,4 +26,17 @@ export default [
       },
     ],
   },
+  {
+    component: 'CNavGroup',
+    name: 'Catálagos',
+    to: '',
+    icon: 'cil-puzzle',
+    items: [
+      {
+        component: 'CNavItem',
+        name: 'Tipo de tecnologías',
+        to: 'technology_type.index',
+      },
+    ],
+  },
 ]

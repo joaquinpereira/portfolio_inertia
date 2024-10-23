@@ -1,7 +1,7 @@
 /*! ------------------------------------------------
  * Project Name: Name: Braxton - Personal Portfolio & Resume HTML Template
  * Project Description: Show yourself brightly with Braxton - unique and creative portfolio and resume template!
- * Tags: mix_design, resume, portfolio, personal page, cv, template, one page, responsive, html5, css3, creative, clean 
+ * Tags: mix_design, resume, portfolio, personal page, cv, template, one page, responsive, html5, css3, creative, clean
  * Version: 1.0.0
  * Build Date: March 2024
  * Last Update: March 2024
@@ -46,6 +46,8 @@
 /* ------------------------------------------------*/
 /* Syne font */
 @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400..800&amp;display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 /* ------------------------------------------------*/
 /* Fonts End */
 /* ------------------------------------------------*/
