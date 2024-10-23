@@ -1,18 +1,18 @@
 <template>
     <div>
-        <Head title="Tipos de tecnologías" />
+        <Head title="Tecnologias" />
         <div style="text-align: center; margin-top: 5px">
-            <h1>Tipos de tecnologías <CButton color="primary" shape="rounded-pill" class="me-md-2" @click="prepareModal(true, null)">Crear</CButton></h1>
+            <h1>Tecnologias <CButton color="primary" shape="rounded-pill" class="me-md-2" @click="prepareModal(true, null)">Crear</CButton></h1>
             <AlertSuccess ref="refAlertSuccess"/>
             <CTable :columns="columnsIndexTable" bordered hover striped>
                 <CTableBody>
-                    <CTableRow v-for="technology_type in technology_types_list" :key="technology_type" >
-                        <CTableDataCell bordered>{{ technology_type.id }}</CTableDataCell>
-                        <CTableDataCell bordered>{{ technology_type.name }}</CTableDataCell>
-                        <CTableDataCell bordered><Icon :icon="technology_type.icon" style="font-size: 1.5rem;"/></CTableDataCell>
+                    <CTableRow v-for="technology in technologies_list" :key="technology" >
+                        <CTableDataCell bordered>{{ technology.id }}</CTableDataCell>
+                        <CTableDataCell bordered>{{ technology.name }}</CTableDataCell>
+                        <CTableDataCell bordered><Icon :icon="technology.icon" style="font-size: 1.5rem;"/></CTableDataCell>
                         <CTableDataCell bordered>
-                            <CButton color="secondary" shape="rounded-pill" class="me-md-2" @click="prepareModal(false, technology_type)">Editar</CButton>
-                            <CButton color="danger" shape="rounded-pill" @click="deleteModal(technology_type)">Eliminar</CButton>
+                            <CButton color="secondary" shape="rounded-pill" class="me-md-2" @click="prepareModal(false, technology)">Editar</CButton>
+                            <CButton color="danger" shape="rounded-pill" @click="deleteModal(technology)">Eliminar</CButton>
                         </CTableDataCell>
                     </CTableRow>
                 </CTableBody>
@@ -27,6 +27,25 @@
                     <CModalTitle>{{ titleModal }}</CModalTitle>
                 </CModalHeader>
                 <CModalBody class="form_modal">
+                    <CFormSwitch
+                        id="active"
+                        v-model="form.active"
+                        :label="form.active ? 'Activo' : 'Inactivo'"
+                        :invalid="form.errors?.active === undefined ? false : true"
+                        :feedback-invalid="form.errors?.active"
+                    />
+                    <br/>
+                    <CFormSelect
+                        id="technology_types_id"
+                        v-model="form.technology_types_id"
+                        label="Tipo de tecnología"
+                        :invalid="form.errors?.technology_types_id === undefined ? false : true"
+                        :feedback-invalid="form.errors?.technology_types_id"
+                    >
+                        <option disabled selected>Selecciona una opción</option>
+                        <option v-for="tech_type in technology_types.data" :value="tech_type.id" :key="tech_type">{{ tech_type.name }}</option>
+                    </CFormSelect>
+                    <br/>
                     <CFormInput
                         id="name"
                         type="text"
@@ -68,7 +87,7 @@
                 @close="() => { showDeleteModal = false }"
             >
                 <CModalHeader>
-                    <CModalTitle>Eliminar tipo de tecnología</CModalTitle>
+                    <CModalTitle>Borrar tecnología</CModalTitle>
                 </CModalHeader>
                 <CModalBody class="form_modal">
                     <div>
@@ -97,16 +116,17 @@ import { onBeforeMount, ref } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
 import Spinner from '@/Components/Spinner.vue'
 import AlertSuccess from '@/Components/AlertSuccess.vue'
-import { useTechnologyTypeStore } from '@/stores/technology_types'
+import { useTechnologiesStore } from '@/stores/technologies'
 import Pagination from '@/Components/Pagination.vue'
 import { Icon } from '@iconify/vue';
 
 const props = defineProps({
+    technologies: Object,
     technology_types: Object,
 });
 
-const { columnsIndexTable, form } = useTechnologyTypeStore()
-const technology_types_list = ref([])
+const { columnsIndexTable, form } = useTechnologiesStore()
+const technologies_list = ref([])
 const pagination_data = ref('')
 const showModal = ref(false)
 const showDeleteModal = ref(false)
@@ -116,7 +136,7 @@ const refAlertSuccess = ref(null)
 const titleModal = ref('')
 const isNewModel = ref(false)
 const prepareModal = (isNew, model) => {
-    titleModal.value = isNew ? 'Creación de tipo de tecnología' : 'Edición de tipo de tecnología'
+    titleModal.value = isNew ? 'Creación de tecnología' : 'Edición de tecnología'
     isNewModel.value = isNew
     form.clearErrors()
     if(model != null){
@@ -134,10 +154,12 @@ const deleteModal = (model) => {
 }
 
 const setValuesInForm = (model) => {
-    form.id = model.id;
-    form.name = model.name;
-    form.icon = model.icon;
-    form.description = model.description;
+    form.id = model.id
+    form.technology_types_id = model.technology_types_id
+    form.active = model.active
+    form.name = model.name
+    form.icon = model.icon
+    form.description = model.description
 }
 const handleSubmit = () => {
     isNewModel.value ? saveModel() : updateModel()
@@ -145,7 +167,7 @@ const handleSubmit = () => {
 
 const saveModel = () => {
     SpinnerLoading.value.show()
-    form.post(route('technology_type.store'), {
+    form.post(route('technologies.store'), {
         preserveScroll: true,
         onSuccess: () => {
             refAlertSuccess.value.show('Registro guardado con éxito!')
@@ -159,7 +181,7 @@ const saveModel = () => {
 
 const updateModel = () => {
     SpinnerLoading.value.show()
-    form.put(route('technology_type.update', form.data()), {
+    form.put(route('technologies.update', form.data()), {
         preserveScroll: true,
         onSuccess: () => {
             refAlertSuccess.value.show('Edición guardada con éxito!')
@@ -173,7 +195,7 @@ const updateModel = () => {
 
 const destroyModel = () => {
     SpinnerLoading.value.show()
-    form.delete(route('technology_type.destroy', form.data()), {
+    form.delete(route('technologies.destroy', form.data()), {
         preserveScroll: true,
         onSuccess: () => {
             refAlertSuccess.value.show('Registro borrado con éxito!')
@@ -186,8 +208,8 @@ const destroyModel = () => {
 }
 
 const prepareTable = () => {
-    technology_types_list.value = props.technology_types?.data;
-    pagination_data.value = props.technology_types?.meta;
+    technologies_list.value = props.technologies?.data;
+    pagination_data.value = props.technologies?.meta;
 }
 
 onBeforeMount(() =>{

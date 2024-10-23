@@ -22,7 +22,6 @@ const show = (msj) => {
     showAlert.value = true
 
     setTimeout(() => {
-        console.log("close")
         showAlert.value = false
     }, 3000);
 }

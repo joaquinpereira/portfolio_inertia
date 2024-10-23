@@ -4,14 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TechnologyTypeRequest extends FormRequest
+class TechnologyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,15 +17,17 @@ class TechnologyTypeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = [];
 
         if($this->method() === 'POST'){
             $rules = [
-                'name' => 'required|string|max:255|unique:technology_types',
+                'technology_types_id' => 'required|integer|exists:technology_types,id',
+                'active' => 'required|boolean',
+                'name' => 'required|string|max:255|unique:technologies',
                 'icon' => 'required|string',
                 'description' => 'nullable|string',
             ];
@@ -35,8 +35,10 @@ class TechnologyTypeRequest extends FormRequest
 
         if($this->method() === 'PUT' || $this->method() === 'PATCH'){
             $rules = [
-                'name' => 'required|string|max:255|unique:technology_types,name,'.$this->id,
-                'icon' => 'required|string',
+                'technology_types_id' => 'sometimes|integer|exists:technology_types,id',
+                'name' => 'sometimes|string|max:255|unique:technologies,name,'.$this->id,
+                'active' => 'sometimes|boolean',
+                'icon' => 'sometimes|string',
                 'description' => 'nullable|string',
             ];
         }
@@ -47,6 +49,8 @@ class TechnologyTypeRequest extends FormRequest
     public function attributes()
     {
         return [
+            'technology_types_id' => 'Tipo de tecnología',
+            'active' => 'Activo',
             'icon' => 'Icono',
             'description' => 'Descripción',
             'name' => 'Nombre',

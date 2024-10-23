@@ -37,6 +37,11 @@ export default [
         name: 'Tipo de tecnologías',
         to: 'technology_type.index',
       },
+      {
+        component: 'CNavItem',
+        name: 'Tecnologías',
+        to: 'technologies.index',
+      },
     ],
   },
 ]

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TechnologyTypeController;
+use App\Http\Controllers\TechnologyController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('technology_type', TechnologyTypeController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('technologies', TechnologyController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__ . '/auth.php';

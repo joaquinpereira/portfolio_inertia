@@ -24,12 +24,6 @@ class TechnologyTypeController extends Controller
         TechnologyType::create($request->validated());
 
         $this->updateTechnologyTypes();
-
-        // return to_route('technology_type.index');
-        //https://www.youtube.com/watch?v=ShGElGusepA
-        //https://icon-sets.iconify.design/
-
-
     }
 
     public function update(TechnologyTypeRequest $request, TechnologyType $technology_type)
@@ -54,6 +48,4 @@ class TechnologyTypeController extends Controller
             'technology_types' => TechnologyTypeResource::collection($technologyTypes->orderBy('id', 'desc')->paginate(25)),
         ]);
     }
-
-
 }
